@@ -3379,97 +3379,7 @@ local boss = Tabs.Main:AddSection("Boss Farm")
             end
         end
     end)
-      if Third_Sea then
-      local RoughSea = Tabs.Main:AddSection("Kitsune")
 
-
-      local ToggleEspKitsune = Tabs.Main:AddToggle("ToggleEspKitsune", {Title = "Esp Kitsune Island",Description = "", Default = false })
-      ToggleEspKitsune:OnChanged(function(Value)
-        KitsuneIslandEsp = Value
-        while KitsuneIslandEsp do wait()
-            UpdateIslandKisuneESP() 
-        end
-    end)
-      Options.ToggleEspKitsune:SetValue(false)
-
-      function UpdateIslandKisuneESP() 
-        for i,v in pairs(game:GetService("Workspace")["_WorldOrigin"].Locations:GetChildren()) do
-            pcall(function()
-                if KitsuneIslandEsp then 
-                    if v.Name == "Kitsune Island" then
-                        if not v:FindFirstChild('NameEsp') then
-                            local bill = Instance.new('BillboardGui',v)
-                            bill.Name = 'NameEsp'
-                            bill.ExtentsOffset = Vector3.new(0, 1, 0)
-                            bill.Size = UDim2.new(1,200,1,30)
-                            bill.Adornee = v
-                            bill.AlwaysOnTop = true
-                            local name = Instance.new('TextLabel',bill)
-                            name.Font = "Code"
-                            name.FontSize = "Size14"
-                            name.TextWrapped = true
-                            name.Size = UDim2.new(1,0,1,0)
-                            name.TextYAlignment = 'Top'
-                            name.BackgroundTransparency = 1
-                            name.TextStrokeTransparency = 0.5
-                            name.TextColor3 = Color3.fromRGB(80, 245, 245)
-                        else
-                            v['NameEsp'].TextLabel.Text = (v.Name ..'   \n'.. round((game:GetService('Players').LocalPlayer.Character.Head.Position - v.Position).Magnitude/3) ..' M')
-                        end
-                    end
-                else
-                    if v:FindFirstChild('NameEsp') then
-                        v:FindFirstChild('NameEsp'):Destroy()
-                    end
-                end
-            end)
-        end
-    end
-
-      local ToggleTPKitsune = Tabs.Main:AddToggle("ToggleTPKitsune", {Title = "Tween To Kitsune Island",Description = "", Default = false })
-      ToggleTPKitsune:OnChanged(function(Value)
-        _G.TweenToKitsune = Value
-      end)
-      Options.ToggleTPKitsune:SetValue(false)
-      spawn(function()
-        local kitsuneIsland
-        while not kitsuneIsland do
-            kitsuneIsland = game:GetService("Workspace").Map:FindFirstChild("KitsuneIsland")
-            wait(1)
-        end
-        while wait() do
-            if _G.TweenToKitsune then
-                local shrineActive = kitsuneIsland:FindFirstChild("ShrineActive")
-                if shrineActive then
-                    for _, v in pairs(shrineActive:GetDescendants()) do
-                        if v:IsA("BasePart") and v.Name:find("NeonShrinePart") then
-                            Tween(v.CFrame)
-                        end
-                    end
-                end
-            end
-        end
-    end)
-
-
-      local ToggleCollectAzure = Tabs.Main:AddToggle("ToggleCollectAzure", {Title = "Collect Azure Ambers",Description = "", Default = false })
-      ToggleCollectAzure:OnChanged(function(Value)
-         _G.CollectAzure = Value
-      end)
-      Options.ToggleCollectAzure:SetValue(false)
-spawn(function()
-    while wait() do
-        if _G.CollectAzure then
-            pcall(function()
-                if game:GetService("Workspace"):FindFirstChild("AttachedAzureEmber") then
-                    Tween(game:GetService("Workspace"):WaitForChild("EmberTemplate"):FindFirstChild("Part").CFrame)
-					print("Azure")
-                end
-            end)
-        end
-    end
-end)
-end
 --------------------------------------------------------------------------------------------------------------------------------------------
 --Item
 local castleraid = Tabs.Item:AddSection("Castle Raid")
@@ -4350,6 +4260,98 @@ ToggleSeaBeAst:OnChanged(function(Value)
             end)
         end
     end)
+end
+
+if Third_Sea then
+    local RoughSea = Tabs.Main:AddSection("Kitsune")
+
+
+    local ToggleEspKitsune = Tabs.Main:AddToggle("ToggleEspKitsune", {Title = "Esp Kitsune Island",Description = "", Default = false })
+    ToggleEspKitsune:OnChanged(function(Value)
+      KitsuneIslandEsp = Value
+      while KitsuneIslandEsp do wait()
+          UpdateIslandKisuneESP() 
+      end
+  end)
+    Options.ToggleEspKitsune:SetValue(false)
+
+    function UpdateIslandKisuneESP() 
+      for i,v in pairs(game:GetService("Workspace")["_WorldOrigin"].Locations:GetChildren()) do
+          pcall(function()
+              if KitsuneIslandEsp then 
+                  if v.Name == "Kitsune Island" then
+                      if not v:FindFirstChild('NameEsp') then
+                          local bill = Instance.new('BillboardGui',v)
+                          bill.Name = 'NameEsp'
+                          bill.ExtentsOffset = Vector3.new(0, 1, 0)
+                          bill.Size = UDim2.new(1,200,1,30)
+                          bill.Adornee = v
+                          bill.AlwaysOnTop = true
+                          local name = Instance.new('TextLabel',bill)
+                          name.Font = "Code"
+                          name.FontSize = "Size14"
+                          name.TextWrapped = true
+                          name.Size = UDim2.new(1,0,1,0)
+                          name.TextYAlignment = 'Top'
+                          name.BackgroundTransparency = 1
+                          name.TextStrokeTransparency = 0.5
+                          name.TextColor3 = Color3.fromRGB(80, 245, 245)
+                      else
+                          v['NameEsp'].TextLabel.Text = (v.Name ..'   \n'.. round((game:GetService('Players').LocalPlayer.Character.Head.Position - v.Position).Magnitude/3) ..' M')
+                      end
+                  end
+              else
+                  if v:FindFirstChild('NameEsp') then
+                      v:FindFirstChild('NameEsp'):Destroy()
+                  end
+              end
+          end)
+      end
+  end
+
+    local ToggleTPKitsune = Tabs.Main:AddToggle("ToggleTPKitsune", {Title = "Tween To Kitsune Island",Description = "", Default = false })
+    ToggleTPKitsune:OnChanged(function(Value)
+      _G.TweenToKitsune = Value
+    end)
+    Options.ToggleTPKitsune:SetValue(false)
+    spawn(function()
+      local kitsuneIsland
+      while not kitsuneIsland do
+          kitsuneIsland = game:GetService("Workspace").Map:FindFirstChild("KitsuneIsland")
+          wait(1)
+      end
+      while wait() do
+          if _G.TweenToKitsune then
+              local shrineActive = kitsuneIsland:FindFirstChild("ShrineActive")
+              if shrineActive then
+                  for _, v in pairs(shrineActive:GetDescendants()) do
+                      if v:IsA("BasePart") and v.Name:find("NeonShrinePart") then
+                          Tween(v.CFrame)
+                      end
+                  end
+              end
+          end
+      end
+  end)
+
+
+    local ToggleCollectAzure = Tabs.Main:AddToggle("ToggleCollectAzure", {Title = "Collect Azure Ambers",Description = "", Default = false })
+    ToggleCollectAzure:OnChanged(function(Value)
+       _G.CollectAzure = Value
+    end)
+    Options.ToggleCollectAzure:SetValue(false)
+spawn(function()
+  while wait() do
+      if _G.CollectAzure then
+          pcall(function()
+              if game:GetService("Workspace"):FindFirstChild("AttachedAzureEmber") then
+                  Tween(game:GetService("Workspace"):WaitForChild("EmberTemplate"):FindFirstChild("Part").CFrame)
+                  print("Azure")
+              end
+          end)
+      end
+  end
+end)
 end
 --------------------------------------------------------------------------------------------------------------------------------------------
 --Setting
