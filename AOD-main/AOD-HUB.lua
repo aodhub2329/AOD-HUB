@@ -4429,11 +4429,12 @@ end
 end)
 
 spawn(function()
-    while wait() do
+    local SuperFastMode = true
+    local cac
+    print("spawm")
+    while cac() do
         if _G.FastAttackZedr_Mode == "Fast Attack" then
-
-            local SuperFastMode = true
-            local cac
+            print("fast")
             if SuperFastMode then 
                 cac=task.wait
             else
@@ -4447,6 +4448,7 @@ spawn(function()
                 wait(0.05)
             end
         if _G.FastAttackZedr_Mode == "Super Fast Attack" then
+            print("Super")
             local SuperFastMode = true
             local cac
             if SuperFastMode then 
@@ -4455,9 +4457,6 @@ spawn(function()
                 cac=wait
             end
             while cac() do
-                if _G.FastAttackZedr_Mode == "NormalAttack" or "Fast Attack"then
-                    break
-                end
                 AttackNoCD()
                 wait(0.0005)
             end
