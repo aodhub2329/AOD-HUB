@@ -2364,6 +2364,9 @@ local plr = game.Players.LocalPlayer
                 end
             end
         end
+        while wait(_G.Fast_Delay) do 
+            AttackNoCoolDown()
+        end
     end
 end
 
