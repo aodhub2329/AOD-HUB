@@ -4263,10 +4263,10 @@ ToggleSeaBeAst:OnChanged(function(Value)
 end
 
 if Third_Sea then
-    local RoughSea = Tabs.Main:AddSection("Kitsune")
+    local RoughSea = Tabs.Sea_event:AddSection("Kitsune")
 
 
-    local ToggleEspKitsune = Tabs.Main:AddToggle("ToggleEspKitsune", {Title = "Esp Kitsune Island",Description = "", Default = false })
+    local ToggleEspKitsune = Tabs.Sea_event:AddToggle("ToggleEspKitsune", {Title = "Esp Kitsune Island",Description = "", Default = false })
     ToggleEspKitsune:OnChanged(function(Value)
       KitsuneIslandEsp = Value
       while KitsuneIslandEsp do wait()
@@ -4309,7 +4309,7 @@ if Third_Sea then
       end
   end
 
-    local ToggleTPKitsune = Tabs.Main:AddToggle("ToggleTPKitsune", {Title = "Tween To Kitsune Island",Description = "", Default = false })
+    local ToggleTPKitsune = Tabs.Sea_event:AddToggle("ToggleTPKitsune", {Title = "Tween To Kitsune Island",Description = "", Default = false })
     ToggleTPKitsune:OnChanged(function(Value)
       _G.TweenToKitsune = Value
     end)
@@ -4335,7 +4335,7 @@ if Third_Sea then
   end)
 
 
-    local ToggleCollectAzure = Tabs.Main:AddToggle("ToggleCollectAzure", {Title = "Collect Azure Ambers",Description = "", Default = false })
+    local ToggleCollectAzure = Tabs.Sea_event:AddToggle("ToggleCollectAzure", {Title = "Collect Azure Ambers",Description = "", Default = false })
     ToggleCollectAzure:OnChanged(function(Value)
        _G.CollectAzure = Value
     end)
