@@ -1,7 +1,4 @@
---[[
-Cảm Ơn Bạn Đã Sử Dụng Dịch Vụ của Minh Khôi, Chúc Bạn Có 1 Trải Nghiệm Vui Vẻ.
-Anh iu bích ngọc 20-10-2009_14-9-2009
-]]--
+
 ----------------------------------------------------------------------------------------------------------------------------------------------
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
@@ -4422,30 +4419,48 @@ _G.FastAttackZedr_Mode = Value
 if _G.FastAttackZedr_Mode == "Fast Attack" then
     _G.Fast_Delay = 0.0005
     local SuperFastMode = true
-    local cac
-    if SuperFastMode then 
-        cac=task.wait
-    else
-        cac=wait
-    end
-    while cac() do 
-        AttackNoCD()
-    end
 elseif _G.FastAttackZedr_Mode == "Normal Attack" then
     _G.Fast_Delay = 0.01
-    local SuperFastMode = false
+    local SuperFastMode = true
 elseif _G.FastAttackZedr_Mode == "Super Fast Attack" then
     _G.Fast_Delay = 0.000005
     local SuperFastMode = true
-    local cac
-    if SuperFastMode then 
-        cac=task.wait
-    else
-        cac=wait
+end
+end)
+
+spawn(function()
+    while wait() do
+        if _G.FastAttackZedr_Mode == "Fast Attack" then
+
+            local SuperFastMode = true
+            local cac
+            if SuperFastMode then 
+                cac=task.wait
+            else
+                cac=wait
+            end
+            while wait(0.01) do 
+                if _G.FastAttackZedr_Mode == "Normal Attack" or "Super Fast Attack" then
+                    break
+                end
+                AttackNoCD()
+            end
+        if _G.FastAttackZedr_Mode == "Super Fast Attack" then
+            local SuperFastMode = true
+            local cac
+            if SuperFastMode then 
+                cac=task.wait
+            else
+                cac=wait
+            end
+            while wait(0.0001) do
+                if _G.FastAttackZedr_Mode == "Normal Attack" or "Fast Attack" then
+                    break
+                end
+                AttackNoCD()
+            end
     end
-    while cac() do 
-        AttackNoCD()
-    end
+end
 end
 end)
 
