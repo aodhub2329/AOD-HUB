@@ -4440,9 +4440,6 @@ spawn(function()
                 cac=wait
             end
             while wait(0.01) do 
-                if _G.FastAttackZedr_Mode == "Normal Attack" or "Super Fast Attack" then
-                    break
-                end
                 AttackNoCD()
             end
         if _G.FastAttackZedr_Mode == "Super Fast Attack" then
@@ -4454,9 +4451,6 @@ spawn(function()
                 cac=wait
             end
             while wait(0.0001) do
-                if _G.FastAttackZedr_Mode == "Normal Attack" or "Fast Attack" then
-                    break
-                end
                 AttackNoCD()
             end
     end
