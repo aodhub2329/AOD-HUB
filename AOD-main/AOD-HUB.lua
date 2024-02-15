@@ -4494,15 +4494,15 @@ ToggleAutoClicker:OnChanged(function(vu)
     Autoclick = vu
     if Autoclick then
         while wait() do
-            local userInputService = game:GetService("UserInputService")
-            local function mouse1Click()
-                local input = Instance.new("InputObjectGesture")
-                input.UserInputType = Enum.UserInputType.MouseButton1
-                userInputService.InputBegan:Fire(input)
-                wait(_G.FastAttackDelay)
-                userInputService.InputEnded:Fire(input)
-            end
-            mouse1Click()
+                local Module = require(game.Players.LocalPlayer.PlayerScripts.CombatFramework)
+                local CombatFramework = debug.getupvalues(Module)[2]
+                local CamShake = require(game.ReplicatedStorage.Util.CameraShaker)
+                CamShake:Stop()
+                CombatFramework.activeController.attacking = false
+                CombatFramework.activeController.timeToNextAttack = 0
+                CombatFramework.activeController.hitboxMagnitude = 180
+                game:GetService'VirtualUser':CaptureController()
+                game:GetService'VirtualUser':Button1Down(Vector2.new(1280, 672))
             if Autoclick == false then
                 break
             end
@@ -5214,8 +5214,6 @@ spawn(function()
   end)
 end)
 
-
---[[
 local ToggleSoruNOCD = Tabs.Player:AddToggle("ToggleSoruNOCD", {Title = "Soru No Cooldown", Default = false })
 ToggleSoruNOCD:OnChanged(function(Value)
     _G.SoruNoCd = Value
@@ -5291,7 +5289,7 @@ function DodgeNoCoolDown()
 end
 
 --------------------------------------------------------------------------------------------------------------------------------------------
-local ToggleSpeedHack = Tabs.Player:AddToggle("ToggleSpeedHack", {Title = "Speed Hack", Default = true })
+local ToggleSpeedHack = Tabs.Player:AddToggle("ToggleSpeedHack", {Title = "Speed Hack", Default = false })
 ToggleSpeedHack:OnChanged(function(Value)
     _G.SpeedHack = Value
     InfAbility()
@@ -5337,7 +5335,7 @@ function InfAbility()
 end
 
 --------------------------------------------------------------------------------------------------------------------------------------------
-local ToggleWalkOnWater = Tabs.Player:AddToggle("ToggleWalkOnWater", {Title = "Wakl On Water", Default = true })
+local ToggleWalkOnWater = Tabs.Player:AddToggle("ToggleWalkOnWater", {Title = "Wakl On Water", Default = false })
 ToggleWalkOnWater:OnChanged(function(Value)
     _G.WalkWater = Value
 end)
@@ -5354,7 +5352,6 @@ spawn(function()
         end)
     end
 end)
-]]
 -----------------------------------------------------------------------------------------------------------------------------------------------
 --Teleport
 
