@@ -4405,9 +4405,6 @@ ToggleFastAttack:OnChanged(function(vu)
 end)
 Options.ToggleFastAttack:SetValue(true)
 
-
-
-
 _G.FastAttackDelay = 0.005
 
 local Client = game.Players.LocalPlayer
@@ -4491,6 +4488,27 @@ while wait() do
     end
 end
 end)
+
+local ToggleAutoClicker = Tabs.Setting:AddToggle("ToggleAutoClicker", {Title = "Auto Click", Default = true })
+ToggleAutoClicker:OnChanged(function(vu)
+    Autoclick = vu
+    if Autoclick then
+        while wait() do
+            local function mouse1Click()
+                local input = Instance.new("InputObjectGesture")
+                input.UserInputType = Enum.UserInputType.MouseButton1
+                userInputService.InputBegan:Fire(input)
+                wait(_G.FastAttackDelay)
+                userInputService.InputEnded:Fire(input)
+            end
+            mouse1Click()
+            if Autoclick == false then
+                break
+            end
+        end
+    end
+end)
+Options.ToggleAutoClicker:SetValue(true)
 
 
     local ToggleBringMob = Tabs.Setting:AddToggle("ToggleBringMob", {Title = "Bring Mob",Description = "", Default = true })
