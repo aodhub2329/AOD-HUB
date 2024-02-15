@@ -24,7 +24,7 @@ local Tabs = {
     Stats = Window:AddTab({ Title = "Stats"}),
     Player = Window:AddTab({ Title = "Player"}),
     Teleport = Window:AddTab({ Title = "Island"}),
-    Fruit = Window:AddTab({ Title = "Fruit"}),
+    Fruit = Window:AddTab({ Title = "Fruit - ESP"}),
     Raid = Window:AddTab({ Title = "Raid - Material"}),
     Race = Window:AddTab({ Title = "Race V4 - Mirage"}),
     Shop = Window:AddTab({ Title = "Shop"}),
@@ -3747,6 +3747,61 @@ if Second_Sea then
             end
         end)
     end
+
+
+    local Mastery = Tabs.Item:AddSection("Law Raid")
+    local ToggleLaw = Tabs.Item:AddToggle("ToggleLaw", {Title = "Auto Law",Description = "", Default = false })
+    
+    ToggleLaw:OnChanged(function(Value)
+        Auto_Law = Value
+    end)
+    Options.ToggleLaw:SetValue(false)
+    spawn(function()
+        pcall(function()
+            while wait() do
+                if Auto_Law then
+                    if not game:GetService("Players").LocalPlayer.Character:FindFirstChild("Microchip") and not game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Microchip") and not game:GetService("Workspace").Enemies:FindFirstChild("Order") and not game:GetService("ReplicatedStorage"):FindFirstChild("Order") then
+                        wait(0.3)
+                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward","Microchip","1")
+                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward","Microchip","2")
+                    end
+                end
+            end
+        end)
+    end)
+    
+    spawn(function()
+        pcall(function()
+            while wait(0.4) do
+                if Auto_Law then
+                    if not game:GetService("Workspace").Enemies:FindFirstChild("Order") and not game:GetService("ReplicatedStorage"):FindFirstChild("Order") then
+                        if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Microchip") or game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Microchip") then
+                            fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
+                        end
+                    end
+                    if game:GetService("ReplicatedStorage"):FindFirstChild("Order") or game:GetService("Workspace").Enemies:FindFirstChild("Order") then
+                        if game:GetService("Workspace").Enemies:FindFirstChild("Order") then
+                            for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                                if v.Name == "Order" then
+                                    repeat wait(_G.Fast_Delay)
+                                        AttackNoCoolDown()
+                                        AutoHaki()
+                                        EquipTool(SelectWeapon)
+                                        Tween(v.HumanoidRootPart.CFrame * CFrame.new(posX,posY,posZ))
+                                        v.HumanoidRootPart.CanCollide = false
+                                        v.HumanoidRootPart.Size = Vector3.new(120, 120, 120)
+                                        --Click
+                                    until not v.Parent or v.Humanoid.Health <= 0 or Auto_Law == false
+                                end
+                            end
+                        elseif game:GetService("ReplicatedStorage"):FindFirstChild("Order") then
+                            Tween(CFrame.new(-6217.2021484375, 28.047645568848, -5053.1357421875))
+                        end
+                    end
+                end
+            end
+        end)
+    end)
 --------------------------------------------------------------------------------------------------------------------------------------------
 --Sea event
 if Third_Sea then
@@ -5785,6 +5840,7 @@ spawn(function()
     end
   end)
 
+local Raid = Tabs.Raid:AddSection("Raid")
 local Chips = {"Flame","Ice","Quake","Light","Dark","Spider","Rumble","Magma","Buddha","Sand","Phoenix","Dough"}
 
 local DropdownRaid = Tabs.Raid:AddDropdown("DropdownRaid", {
@@ -6087,67 +6143,30 @@ elseif Third_Sea then
     })
 end
 
-
-
-local Mastery = Tabs.Raid:AddSection("Law Raid")
-
-
-local ToggleLaw = Tabs.Raid:AddToggle("ToggleLaw", {Title = "Auto Law",Description = "", Default = false })
-
-ToggleLaw:OnChanged(function(Value)
-    Auto_Law = Value
-end)
-Options.ToggleLaw:SetValue(false)
-spawn(function()
-    pcall(function()
-        while wait() do
-            if Auto_Law then
-                if not game:GetService("Players").LocalPlayer.Character:FindFirstChild("Microchip") and not game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Microchip") and not game:GetService("Workspace").Enemies:FindFirstChild("Order") and not game:GetService("ReplicatedStorage"):FindFirstChild("Order") then
-                    wait(0.3)
-                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward","Microchip","1")
-                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward","Microchip","2")
-                end
-            end
-        end
-    end)
-end)
-
-spawn(function()
-    pcall(function()
-        while wait(0.4) do
-            if Auto_Law then
-                if not game:GetService("Workspace").Enemies:FindFirstChild("Order") and not game:GetService("ReplicatedStorage"):FindFirstChild("Order") then
-                    if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Microchip") or game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Microchip") then
-                        fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
-                    end
-                end
-                if game:GetService("ReplicatedStorage"):FindFirstChild("Order") or game:GetService("Workspace").Enemies:FindFirstChild("Order") then
-                    if game:GetService("Workspace").Enemies:FindFirstChild("Order") then
-                        for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-                            if v.Name == "Order" then
-                                repeat wait(_G.Fast_Delay)
-                                    AttackNoCoolDown()
-                                    AutoHaki()
-                                    EquipTool(SelectWeapon)
-                                    Tween(v.HumanoidRootPart.CFrame * CFrame.new(posX,posY,posZ))
-                                    v.HumanoidRootPart.CanCollide = false
-                                    v.HumanoidRootPart.Size = Vector3.new(120, 120, 120)
-                                    --Click
-                                until not v.Parent or v.Humanoid.Health <= 0 or Auto_Law == false
-                            end
-                        end
-                    elseif game:GetService("ReplicatedStorage"):FindFirstChild("Order") then
-                        Tween(CFrame.new(-6217.2021484375, 28.047645568848, -5053.1357421875))
-                    end
-                end
-            end
-        end
-    end)
-end)
-
 --------------------------------------------------------------------------------------------------------------------------------------------
 --RaceV4
 local AutoMysticIsland = Tabs.Race:AddSection("Mirage Island")
+
+local ToggleMirageIsland = Tabs.Race:AddToggle("ToggleMirageIsland", {Title = "Find Mirage Island",Description = "", Default = false })
+ToggleMirageIsland:OnChanged(function(Value)
+    _G.FindMirageIsland = Value
+end)
+Options.ToggleMirageIsland:SetValue(false)
+
+spawn(function()
+    while wait() do
+    if _G.FindMirageIsland then
+        if game:GetService("Workspace").Map:FindFirstChild("MysticIsland") or game:GetService("Workspace").Map:FindFirstChild("MysticIsland") then
+            if HighestPointRealCFrame and (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - HighestPointRealCFrame.Position).Magnitude > 10 then
+            Tween(getHighestPoint().CFrame * CFrame.new(0, 211.88, 0))
+                end
+        elseif not game:GetService("Workspace").Map:FindFirstChild("MysticIsland") or not game:GetService("Workspace").Map:FindFirstChild("MysticIsland") then
+            Hop()
+            end
+        end
+    end
+end)
+
 Tabs.Race:AddButton({
     Title = "Tween to Mirage Island",
     Description = "",
@@ -6223,6 +6242,51 @@ pcall(function()
     end
 end)
 end)
+
+if Third_Sea then
+    local ToggleFindMoon = Tabs.Hop:AddToggle("ToggleFindMoon", {Title = "Find Full Moon",Description = "", Default = false })
+    ToggleFindMoon:OnChanged(function(Value)
+        _G.AutoFindMoon = Value
+    end)
+    Options.ToggleFindMoon:SetValue(false)
+    
+    
+    spawn(function()
+        while wait() do
+            if _G.AutoFindMoon then
+            if game:GetService("Lighting").Sky.MoonTextureId=="http://www.roblox.com/asset/?id=9709149052" or game:GetService("Lighting").Sky.MoonTextureId=="http://www.roblox.com/asset/?id=9709149431" then
+                wait(2.0)
+            elseif game:GetService("Lighting").Sky.MoonTextureId=="http://www.roblox.com/asset/?id=9709143733" then
+                Hop()
+                Fluent:Notify({
+                    Title = "AOD HUB",
+                    Content = "Turn Off Find Full Moon",
+                    SubContent = "", -- Optional
+                    Duration = 5 -- Set to nil to make the notification not disappear
+                })
+            elseif game:GetService("Lighting").Sky.MoonTextureId=="http://www.roblox.com/asset/?id=9709150401" then
+                Hop()
+                Fluent:Notify({
+                    Title = "AOD HUB",
+                    Content = "Hop",
+                    SubContent = "", -- Optional
+                    Duration = 5 -- Set to nil to make the notification not disappear
+                })
+            elseif game:GetService("Lighting").Sky.MoonTextureId=="http://www.roblox.com/asset/?id=9709149680" then
+                Hop()
+                Fluent:Notify({
+                    Title = "AOD HUB",
+                    Content = "Hop",
+                    SubContent = "", -- Optional
+                    Duration = 5 -- Set to nil to make the notification not disappear
+                })
+            else
+                Hop()
+                end
+            end
+        end
+    end)
+end
 
 local Togglelockmoon = Tabs.Race:AddToggle("Togglelockmoon", {Title = "Auto lock moon",Description = "", Default = false })
 Togglelockmoon:OnChanged(function(Value)
@@ -6838,11 +6902,7 @@ Tabs.Misc:AddButton({
 })
 
 
-local Mastery = Tabs.Misc:AddSection("Troll")
-
 local Mastery = Tabs.Misc:AddSection("Misc")
-
-
 local ToggleRejoin = Tabs.Misc:AddToggle("ToggleRejoin", {Title = "Auto Rejoin", Description = "",Default = true })
 ToggleRejoin:OnChanged(function(Value)
 	_G.AutoRejoin = Value
@@ -7120,78 +7180,6 @@ function NoFog()
     end
 end
 
---------------------------------------------------------------------------------------------------------------------------------------------
---Hop
-
-if First_Sea or Second_Sea then
-    local Mastery = Tabs.Hop:AddSection("Thid Sea")
-end
-
-if Third_Sea then
-local ToggleFindMoon = Tabs.Hop:AddToggle("ToggleFindMoon", {Title = "Find Full Moon",Description = "", Default = false })
-ToggleFindMoon:OnChanged(function(Value)
-    _G.AutoFindMoon = Value
-end)
-Options.ToggleFindMoon:SetValue(false)
-
-
-spawn(function()
-    while wait() do
-        if _G.AutoFindMoon then
-        if game:GetService("Lighting").Sky.MoonTextureId=="http://www.roblox.com/asset/?id=9709149052" or game:GetService("Lighting").Sky.MoonTextureId=="http://www.roblox.com/asset/?id=9709149431" then
-            wait(2.0)
-        elseif game:GetService("Lighting").Sky.MoonTextureId=="http://www.roblox.com/asset/?id=9709143733" then
-            Hop()
-            Fluent:Notify({
-                Title = "AOD HUB",
-                Content = "Turn Off Find Full Moon",
-                SubContent = "", -- Optional
-                Duration = 5 -- Set to nil to make the notification not disappear
-            })
-        elseif game:GetService("Lighting").Sky.MoonTextureId=="http://www.roblox.com/asset/?id=9709150401" then
-            Hop()
-            Fluent:Notify({
-                Title = "AOD HUB",
-                Content = "Hop",
-                SubContent = "", -- Optional
-                Duration = 5 -- Set to nil to make the notification not disappear
-            })
-        elseif game:GetService("Lighting").Sky.MoonTextureId=="http://www.roblox.com/asset/?id=9709149680" then
-            Hop()
-            Fluent:Notify({
-                Title = "AOD HUB",
-                Content = "Hop",
-                SubContent = "", -- Optional
-                Duration = 5 -- Set to nil to make the notification not disappear
-            })
-        else
-            Hop()
-            end
-        end
-    end
-end)
-
-
-local ToggleMirageIsland = Tabs.Hop:AddToggle("ToggleMirageIsland", {Title = "Find Mirage Island",Description = "", Default = false })
-ToggleMirageIsland:OnChanged(function(Value)
-    _G.FindMirageIsland = Value
-end)
-Options.ToggleMirageIsland:SetValue(false)
-
-spawn(function()
-    while wait() do
-    if _G.FindMirageIsland then
-        if game:GetService("Workspace").Map:FindFirstChild("MysticIsland") or game:GetService("Workspace").Map:FindFirstChild("MysticIsland") then
-            if HighestPointRealCFrame and (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - HighestPointRealCFrame.Position).Magnitude > 10 then
-            Tween(getHighestPoint().CFrame * CFrame.new(0, 211.88, 0))
-                end
-        elseif not game:GetService("Workspace").Map:FindFirstChild("MysticIsland") or not game:GetService("Workspace").Map:FindFirstChild("MysticIsland") then
-            Hop()
-            end
-        end
-    end
-end)
-end
 ----------------------------------------------------------------------------------------------------------------------------------------------
 InterfaceManager:SetFolder("AODHUB")
 SaveManager:SetFolder("AOD-HUB")
