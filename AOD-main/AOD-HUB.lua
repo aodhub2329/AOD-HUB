@@ -4415,14 +4415,19 @@ local DropdownDelayAttack = Tabs.Setting:AddDropdown("DropdownDelayAttack", {
 })
 DropdownDelayAttack:SetValue("NormalAttack")
 DropdownDelayAttack:OnChanged(function(Value)
+print(Value)
 _G.FastAttackZedr_Mode = Value
 local cac
-if SuperFastMode then 
+local SuperFastMode = true
+if SuperFastMode then
+    print("true") 
     cac=task.wait
 else
+    print("false")
     cac=wait
 end
 while cac() do
+    print("attack")
     AttackNoCoolDown()
     wait(_G.Fast_Delay)
 end
