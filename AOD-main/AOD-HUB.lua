@@ -4439,8 +4439,12 @@ spawn(function()
             else
                 cac=wait
             end
-            while wait(0.01) do 
+            while cac() do 
+                if _G.FastAttackZedr_Mode == "NormalAttack" or "Super Fast Attack"then
+                    break
+                end
                 AttackNoCD()
+                wait(0.05)
             end
         if _G.FastAttackZedr_Mode == "Super Fast Attack" then
             local SuperFastMode = true
@@ -4450,8 +4454,12 @@ spawn(function()
             else
                 cac=wait
             end
-            while wait(0.0001) do
+            while cac() do
+                if _G.FastAttackZedr_Mode == "NormalAttack" or "Fast Attack"then
+                    break
+                end
                 AttackNoCD()
+                wait(0.0005)
             end
     end
 end
