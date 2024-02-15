@@ -4408,13 +4408,13 @@ Options.ToggleFastAttack:SetValue(true)
 
 
 
-_G.FastAttackDelay = 0.05
+_G.FastAttackDelay = 0.005
 
 local Client = game.Players.LocalPlayer
 local STOP = require(Client.PlayerScripts.CombatFramework.Particle)
 local STOPRL = require(game:GetService("ReplicatedStorage").CombatFramework.RigLib)
 spawn(function()
-    while task.wait() do
+    while wait() do
         pcall(function()
             if not shared.orl then shared.orl = STOPRL.wrapAttackAnimationAsync end
             if not shared.cpc then shared.cpc = STOP.play end
@@ -4426,7 +4426,7 @@ spawn(function()
                         a:Play(0.01,0.01,0.01)
                         func(Hits)
                         STOP.play = shared.cpc
-                        wait(a.length * 0.5)
+                        wait(a.length)
                         a:Stop()
                     else
                         a:Play()
@@ -4481,7 +4481,7 @@ for i = 1, 1 do
 end
 end
 spawn(function()
-while wait(.1) do
+while wait() do
     if FastAttack then
         pcall(function()
             repeat task.wait(_G.FastAttackDelay)
