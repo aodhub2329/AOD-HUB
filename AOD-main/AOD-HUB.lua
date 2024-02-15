@@ -2354,7 +2354,7 @@ local plr = game.Players.LocalPlayer
                         debug.setupvalue(AC.attack, 7, u10)
                         pcall(function()
                             if plr.Character:FindFirstChildOfClass("Tool") and AC.blades and AC.blades[1] then
-                                AC.animator.anims.basic[1]:Play(0.001,0.001,0.001)
+                                AC.animator.anims.basic[1]:Play(0.01,0.01,0.01)
                                 game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("weaponChange",tostring(GetCurrentBlade()))
                                 game.ReplicatedStorage.Remotes.Validator:FireServer(math.floor(u12 / 1099511627776 * 16777215), u10)
                                 game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("hit", bladehit, i, "")
