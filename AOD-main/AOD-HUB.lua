@@ -4412,6 +4412,25 @@ end
 --Setting
 local SettingFarm = Tabs.Setting:AddSection("Farming")
 
+local listfastattack = {'Normal Attack','Fast Attack','Super Fast Attack'}
+local DropdownDelayAttack = Tabs.Setting:AddDropdown("DropdownDelayAttack", {
+    Title = "Select Fast Attack",
+    Description = "",
+    Values = listfastattack,
+    Multi = false,
+    Default = 1,
+})
+DropdownDelayAttack:SetValue("NormalAttack")
+DropdownDelayAttack:OnChanged(function(Value)
+_G.FastAttackZedr_Mode = Value
+if _G.FastAttackZedr_Mode == "Fast Attack" then
+    _G.Fast_Delay = 0.05
+elseif _G.FastAttackZedr_Mode == "Normal Attack" then
+    _G.Fast_Delay = 0.10
+elseif _G.FastAttackZedr_Mode == "Super Fast Attack" then
+    _G.Fast_Delay = 0.02
+end
+end)
 
     local ToggleBringMob = Tabs.Setting:AddToggle("ToggleBringMob", {Title = "Bring Mob",Description = "", Default = true })
     ToggleBringMob:OnChanged(function(Value)
@@ -6244,7 +6263,7 @@ end)
 end)
 
 if Third_Sea then
-    local ToggleFindMoon = Tabs.Hop:AddToggle("ToggleFindMoon", {Title = "Find Full Moon",Description = "", Default = false })
+    local ToggleFindMoon = Tabs.Race:AddToggle("ToggleFindMoon", {Title = "Find Full Moon",Description = "", Default = false })
     ToggleFindMoon:OnChanged(function(Value)
         _G.AutoFindMoon = Value
     end)
