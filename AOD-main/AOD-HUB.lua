@@ -4400,12 +4400,12 @@ DropdownDelayAttack:SetValue("NormalAttack")
 DropdownDelayAttack:OnChanged(function(Value)
 _G.FastAttackZedr_Mode = Value
 if _G.FastAttackZedr_Mode == "Fast Attack" then
-    _G.Fast_Delay = 0.005
+    _G.Fast_Delay = 0.00000000000000000000000000000000000000001
 elseif _G.FastAttackZedr_Mode == "Normal Attack" then
-    _G.Fast_Delay = 0.01
+    _G.Fast_Delay = 0.00001
     local SuperFastMode = true
 elseif _G.FastAttackZedr_Mode == "Super Fast Attack" then
-    _G.Fast_Delay = 0.0005
+    _G.Fast_Delay = 0
 end
 end)
 
