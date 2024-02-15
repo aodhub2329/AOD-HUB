@@ -4489,11 +4489,12 @@ while wait() do
 end
 end)
 
-local ToggleAutoClicker = Tabs.Setting:AddToggle("ToggleAutoClicker", {Title = "Auto Click", Default = true })
+local ToggleAutoClicker = Tabs.Setting:AddToggle("ToggleAutoClicker", {Title = "Auto Click", Default = false })
 ToggleAutoClicker:OnChanged(function(vu)
     Autoclick = vu
     if Autoclick then
         while wait() do
+            local userInputService = game:GetService("UserInputService")
             local function mouse1Click()
                 local input = Instance.new("InputObjectGesture")
                 input.UserInputType = Enum.UserInputType.MouseButton1
@@ -4508,7 +4509,7 @@ ToggleAutoClicker:OnChanged(function(vu)
         end
     end
 end)
-Options.ToggleAutoClicker:SetValue(true)
+Options.ToggleAutoClicker:SetValue(false)
 
 
     local ToggleBringMob = Tabs.Setting:AddToggle("ToggleBringMob", {Title = "Bring Mob",Description = "", Default = true })
