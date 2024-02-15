@@ -17,17 +17,18 @@ local Window = Fluent:CreateWindow({
     MinimizeKey = Enum.KeyCode.End
 })
 local Tabs = {
-    Main = Window:AddTab({ Title = "Main", Icon = "home" }),
-    Setting = Window:AddTab({ Title = "Setting", Icon = "settings" }),
-    Stats = Window:AddTab({ Title = "Stats", Icon = "plus-circle" }),
-    Player = Window:AddTab({ Title = "Player", Icon = "box" }),
-    Teleport = Window:AddTab({ Title = "Island", Icon = "palmtree" }),
-    Fruit = Window:AddTab({ Title = "Fruit", Icon = "cherry" }),
-    Raid = Window:AddTab({ Title = "Raid", Icon = "swords" }),
-    Race = Window:AddTab({ Title = "Race V4", Icon = "chevrons-right" }),
-    Shop = Window:AddTab({ Title = "Shop", Icon = "shopping-cart" }),
-	Misc = Window:AddTab({ Title = "Misc", Icon = "list-plus" }),
-    Hop = Window:AddTab({ Title = "Hop", Icon = "user" }),
+    Main = Window:AddTab({ Title = "Main"}),
+    Item = Window:AddTab({ Title = "Item"}),
+    Setting = Window:AddTab({ Title = "Setting"}),
+    Stats = Window:AddTab({ Title = "Stats"}),
+    Player = Window:AddTab({ Title = "Player"}),
+    Teleport = Window:AddTab({ Title = "Island"}),
+    Fruit = Window:AddTab({ Title = "Fruit"}),
+    Raid = Window:AddTab({ Title = "Raid"}),
+    Race = Window:AddTab({ Title = "Race V4"}),
+    Shop = Window:AddTab({ Title = "Shop"}),
+	Misc = Window:AddTab({ Title = "Misc"}),
+    Hop = Window:AddTab({ Title = "Hop"}),
 }
 local Options = Fluent.Options
 do
@@ -2699,47 +2700,7 @@ end)
         end
         end
       end)
-
-
-    local ToggleCastleRaid = Tabs.Main:AddToggle("ToggleCastleRaid", {
-        Title = "Auto Castle Raid",
-        Description = "", 
-        Default = false })
-    ToggleCastleRaid:OnChanged(function(Value)
-        _G.CastleRaid = Value
-    end)
-    Options.ToggleCastleRaid:SetValue(false)
-    spawn(function()
-        while wait() do
-            if _G.CastleRaid then
-                pcall(function()
-                    local CFrameCastleRaid = CFrame.new(-5496.17432, 313.768921, -2841.53027, 0.924894512, 7.37058015e-09, 0.380223751, 3.5881019e-08, 1, -1.06665446e-07, -0.380223751, 1.12297109e-07, 0.924894512)
-                    if (CFrame.new(-5539.3115234375, 313.800537109375, -2972.372314453125).Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 500 then
-                        for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-                            if _G.CastleRaid and v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
-                                if (v.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 2000 then
-                                    repeat wait(_G.Fast_Delay)
-                                        AttackNoCoolDown()
-                                        AutoHaki()
-                                        EquipTool(SelectWeapon)
-                                        v.HumanoidRootPart.CanCollide = false
-                                        v.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
-                                        toTarget(v.HumanoidRootPart.CFrame * CFrame.new(posX,posY,posZ))
-                                    until v.Humanoid.Health <= 0 or not v.Parent or not _G.CastleRaid
-                                end
-                            end
-                        end
-                    else
-                        toTarget(CFrameCastleRaid)
-                     
-                      
-                    end
-                end)
-            end
-        end
-        end)
-
-
+    
 --------------------------------------------------------------------------------------------------------------------------------------------
 
 game:GetService('RunService').RenderStepped:connect(function()           
@@ -4286,10 +4247,105 @@ end)
 
  Options.ToggleMirage:SetValue(false)
 
-local Items = Tabs.Main:AddSection("Items Farm")
+--------------------------------------------------------------------------------------------------------------------------------------------
+--Item
+local castleraid = Tabs.Item:AddSection("Castle Raid")
 
-if Third_Sea then
-    local ToggleHallow = Tabs.Main:AddToggle("ToggleHallow", {Title = "Auto Fully Hallow Scythe",Description = "", Default = false })
+local ToggleCastleRaid = Tabs.Item:AddToggle("ToggleCastleRaid", {
+    Title = "Auto Castle Raid",
+    Description = "", 
+    Default = false })
+ToggleCastleRaid:OnChanged(function(Value)
+    _G.CastleRaid = Value
+end)
+Options.ToggleCastleRaid:SetValue(false)
+spawn(function()
+    while wait() do
+        if _G.CastleRaid then
+            pcall(function()
+                local CFrameCastleRaid = CFrame.new(-5496.17432, 313.768921, -2841.53027, 0.924894512, 7.37058015e-09, 0.380223751, 3.5881019e-08, 1, -1.06665446e-07, -0.380223751, 1.12297109e-07, 0.924894512)
+                if (CFrame.new(-5539.3115234375, 313.800537109375, -2972.372314453125).Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 500 then
+                    for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                        if _G.CastleRaid and v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
+                            if (v.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 2000 then
+                                repeat wait(_G.Fast_Delay)
+                                    AttackNoCoolDown()
+                                    AutoHaki()
+                                    EquipTool(SelectWeapon)
+                                    v.HumanoidRootPart.CanCollide = false
+                                    v.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
+                                    toTarget(v.HumanoidRootPart.CFrame * CFrame.new(posX,posY,posZ))
+                                until v.Humanoid.Health <= 0 or not v.Parent or not _G.CastleRaid
+                            end
+                        end
+                    end
+                else
+                    toTarget(CFrameCastleRaid)
+                 
+                  
+                end
+            end)
+        end
+    end
+    end)
+
+local elite = Tabs.Item:AddSection("Elite")
+local ToggleElite = Tabs.Item:AddToggle("ToggleElite", {Title = "Auto Eliter",Description = "", Default = false })
+
+ToggleElite:OnChanged(function(Value)
+   _G.AutoElite = Value
+   end)
+   Options.ToggleElite:SetValue(false)
+   spawn(function()
+       while task.wait() do
+           if _G.AutoElite then
+               pcall(function()
+                   if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == true then
+                       if string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text,"Diablo") or string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text,"Deandre") or string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text,"Urban") then
+                           if game:GetService("Workspace").Enemies:FindFirstChild("Diablo") or game:GetService("Workspace").Enemies:FindFirstChild("Deandre") or game:GetService("Workspace").Enemies:FindFirstChild("Urban") then
+                               for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                                   if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
+                                       if v.Name == "Diablo" or v.Name == "Deandre" or v.Name == "Urban" then
+                                        repeat wait(_G.Fast_Delay)
+                                            AttackNoCoolDown()
+                                               EquipTool(SelectWeapon)
+                                               AutoHaki()
+                                               toTarget(v.HumanoidRootPart.CFrame * CFrame.new(posX,posY,posZ))
+                                               MonsterPosition = v.HumanoidRootPart.CFrame
+                                               v.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame
+                                               v.Humanoid.JumpPower = 0
+                                               v.Humanoid.WalkSpeed = 0
+                                               v.HumanoidRootPart.CanCollide = false
+                                               v.HumanoidRootPart.Size = Vector3.new(1, 1, 1)
+                                           until _G.AutoElite == false or v.Humanoid.Health <= 0 or not v.Parent
+                                       end
+                                   end
+                               end
+                           else
+                             
+                               if game:GetService("ReplicatedStorage"):FindFirstChild("Diablo") then
+                                toTarget(game:GetService("ReplicatedStorage"):FindFirstChild("Diablo").HumanoidRootPart.CFrame * CFrame.new(posX,posY,posZ))
+                               elseif game:GetService("ReplicatedStorage"):FindFirstChild("Deandre") then
+                                toTarget(game:GetService("ReplicatedStorage"):FindFirstChild("Deandre").HumanoidRootPart.CFrame * CFrame.new(posX,posY,posZ))
+                               elseif game:GetService("ReplicatedStorage"):FindFirstChild("Urban") then
+                                toTarget(game:GetService("ReplicatedStorage"):FindFirstChild("Urban").HumanoidRootPart.CFrame * CFrame.new(posX,posY,posZ))
+                               end
+
+                           end
+                     
+                       end
+                   else
+                       game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("EliteHunter")
+                   end
+               end)
+           end
+       end
+   end)
+end
+
+   if Third_Sea then
+    local Hallow = Tabs.Item:AddSection("Hallow Scythe")
+    local ToggleHallow = Tabs.Item:AddToggle("ToggleHallow", {Title = "Auto Fully Hallow Scythe",Description = "", Default = false })
 
     ToggleHallow:OnChanged(function(Value)
         AutoHallowSycthe = Value
@@ -4346,7 +4402,7 @@ if Third_Sea then
            end
            end)
         
-           
+           local yama = Tabs.Item:AddSection("Yama")
            local ToggleYama = Tabs.Main:AddToggle("ToggleYama", {Title = "Auto Yama",Description = "", Default = false })
            ToggleYama:OnChanged(function(Value)
             _G.AutoYama = Value
@@ -4364,7 +4420,7 @@ if Third_Sea then
             end
         end)
 
-
+        local tushita = Tabs.Item:AddSection("Tushita")
         local ToggleTushita = Tabs.Main:AddToggle("ToggleTushita", {Title = "Auto Tushita",Description = "", Default = false })
         ToggleTushita:OnChanged(function(Value)
             AutoTushita = Value
@@ -4426,10 +4482,9 @@ if Third_Sea then
                     end
                 end)
             end
-        end
-
 
 if Second_Sea then
+        local factory = Tabs.Item:AddSection("Factory")
         local ToggleFactory = Tabs.Main:AddToggle("ToggleFactory", {Title = "Auto Factory",Description = "", Default = false })
         ToggleFactory:OnChanged(function(Value)
             _G.Factory = Value
@@ -4474,6 +4529,7 @@ if Second_Sea then
     end
 
         if Third_Sea then
+    local Doughking = Tabs.Item:AddSection("Dough King")
     local ToggleCakeV2 = Tabs.Main:AddToggle("ToggleCakeV2", {Title = "Auto Dough King [Need Spawn]",Description = "", Default = false })
     ToggleCakeV2:OnChanged(function(Value)
         _G.AutoCakeV2 = Value
@@ -4514,6 +4570,7 @@ end
 
     
 if Second_Sea or Third_Sea then
+    local haki = Tabs.Item:AddSection("Haki Color")
     local ToggleHakiColor = Tabs.Main:AddToggle("ToggleHakiColor", {Title = "Auto Haki Color",Description = "",Default = false })
     ToggleHakiColor:OnChanged(function(Value)
         _G.Auto_Buy_Enchancement = Value
@@ -4533,6 +4590,7 @@ if Second_Sea or Third_Sea then
 end
 
 if Second_Sea then
+    local swordlegen = Tabs.Item:AddSection("Sword Lengendary")
     local ToggleSwordLengend = Tabs.Main:AddToggle("ToggleSwordLengend", {Title = "Auto Sword Lengendary",Description = "",Default = false })
     ToggleSwordLengend:OnChanged(function(Value)
         _G.BuyLengendSword = Value
@@ -4556,12 +4614,13 @@ if Second_Sea then
             end
         end)
     end
+
 --------------------------------------------------------------------------------------------------------------------------------------------
 --Setting
 local SettingFarm = Tabs.Setting:AddSection("Farming")
 
 
-    local ToggleBringMob = Tabs.Setting:AddToggle("ToggleBringMob", {Title = " Enable Bring Mob",Description = "", Default = true })
+    local ToggleBringMob = Tabs.Setting:AddToggle("ToggleBringMob", {Title = "Bring Mob",Description = "", Default = true })
     ToggleBringMob:OnChanged(function(Value)
         _G.BringMob = Value
     end)
