@@ -4403,7 +4403,7 @@ end
            end)
         
            local yama = Tabs.Item:AddSection("Yama")
-           local ToggleYama = Tabs.Main:AddToggle("ToggleYama", {Title = "Auto Yama",Description = "", Default = false })
+           local ToggleYama = Tabs.Item:AddToggle("ToggleYama", {Title = "Auto Yama",Description = "", Default = false })
            ToggleYama:OnChanged(function(Value)
             _G.AutoYama = Value
            end)
@@ -4421,7 +4421,7 @@ end
         end)
 
         local tushita = Tabs.Item:AddSection("Tushita")
-        local ToggleTushita = Tabs.Main:AddToggle("ToggleTushita", {Title = "Auto Tushita",Description = "", Default = false })
+        local ToggleTushita = Tabs.Item:AddToggle("ToggleTushita", {Title = "Auto Tushita",Description = "", Default = false })
         ToggleTushita:OnChanged(function(Value)
             AutoTushita = Value
         end)
@@ -4458,7 +4458,7 @@ end
                    end)
 
 
-                   local ToggleHoly = Tabs.Main:AddToggle("ToggleHoly", {Title = "Auto Holy Torch Tushita",Description = "", Default = false })
+                   local ToggleHoly = Tabs.Item:AddToggle("ToggleHoly", {Title = "Auto Holy Torch Tushita",Description = "", Default = false })
                    ToggleHoly:OnChanged(function(Value)
                     _G.Auto_Holy_Torch = Value
                    end)
@@ -4485,7 +4485,7 @@ end
 
 if Second_Sea then
         local factory = Tabs.Item:AddSection("Factory")
-        local ToggleFactory = Tabs.Main:AddToggle("ToggleFactory", {Title = "Auto Factory",Description = "", Default = false })
+        local ToggleFactory = Tabs.Item:AddToggle("ToggleFactory", {Title = "Auto Factory",Description = "", Default = false })
         ToggleFactory:OnChanged(function(Value)
             _G.Factory = Value
         end)
@@ -4530,7 +4530,7 @@ if Second_Sea then
 
         if Third_Sea then
     local Doughking = Tabs.Item:AddSection("Dough King")
-    local ToggleCakeV2 = Tabs.Main:AddToggle("ToggleCakeV2", {Title = "Auto Dough King [Need Spawn]",Description = "", Default = false })
+    local ToggleCakeV2 = Tabs.Item:AddToggle("ToggleCakeV2", {Title = "Auto Dough King [Need Spawn]",Description = "", Default = false })
     ToggleCakeV2:OnChanged(function(Value)
         _G.AutoCakeV2 = Value
     end)
@@ -4571,7 +4571,7 @@ end
     
 if Second_Sea or Third_Sea then
     local haki = Tabs.Item:AddSection("Haki Color")
-    local ToggleHakiColor = Tabs.Main:AddToggle("ToggleHakiColor", {Title = "Auto Haki Color",Description = "",Default = false })
+    local ToggleHakiColor = Tabs.Item:AddToggle("ToggleHakiColor", {Title = "Auto Haki Color",Description = "",Default = false })
     ToggleHakiColor:OnChanged(function(Value)
         _G.Auto_Buy_Enchancement = Value
     end)
@@ -4591,7 +4591,7 @@ end
 
 if Second_Sea then
     local swordlegen = Tabs.Item:AddSection("Sword Lengendary")
-    local ToggleSwordLengend = Tabs.Main:AddToggle("ToggleSwordLengend", {Title = "Auto Sword Lengendary",Description = "",Default = false })
+    local ToggleSwordLengend = Tabs.Item:AddToggle("ToggleSwordLengend", {Title = "Auto Sword Lengendary",Description = "",Default = false })
     ToggleSwordLengend:OnChanged(function(Value)
         _G.BuyLengendSword = Value
     end)
