@@ -2322,7 +2322,6 @@ local plr = game.Players.LocalPlayer
     function AttackNoCoolDown()
         if not AutoFarmMasDevilFruit or AutoFarmMasGun then
             if not Auto_Raid then
-
                 local plr = game.Players.LocalPlayer
                 
                 local CbFw = debug.getupvalues(require(plr.PlayerScripts.CombatFramework))
@@ -2335,6 +2334,7 @@ local plr = game.Players.LocalPlayer
                     while ret.Parent~=game.Players.LocalPlayer.Character do ret=ret.Parent end
                     return ret
                 end
+                function AttackNoCD() 
                     local AC = CbFw2.activeController
                     for i = 1, 1 do 
                         local bladehit = require(game.ReplicatedStorage.CombatFramework.RigLib).getBladeHits(
@@ -2381,12 +2381,10 @@ local plr = game.Players.LocalPlayer
                         end
                     end
                 end
-
-                    end
-                end
             end
-
-
+        end
+    end
+end
 
 
 
@@ -2536,26 +2534,6 @@ end
 --------------------------------------------------------------------------------------------------------------------------------------------
 --Create Tabs
 local Farming = Tabs.Main:AddSection("Farming")
-local listfastattack = {'Normal Attack','Fast Attack','Super Fast Attack'}
-
-    local DropdownDelayAttack = Tabs.Main:AddDropdown("DropdownDelayAttack", {
-        Title = "Select Fast Attack",
-        Description = "",
-        Values = listfastattack,
-        Multi = false,
-        Default = 1,
-    })
-    DropdownDelayAttack:SetValue("Fast Attack")
-    DropdownDelayAttack:OnChanged(function(Value)
-    _G.FastAttackZedr_Mode = Value
-	if _G.FastAttackZedr_Mode == "Fast Attack" then
-		_G.Fast_Delay = 0.05
-	elseif _G.FastAttackZedr_Mode == "Normal Attack" then
-		_G.Fast_Delay = 0.10
-	elseif _G.FastAttackZedr_Mode == "Super Fast Attack" then
-		_G.Fast_Delay = 0.02
-	end
-end)
 
     local DropdownSelectWeapon = Tabs.Main:AddDropdown("DropdownSelectWeapon", {
         Title = "Weapon",
@@ -3162,6 +3140,7 @@ spawn(function()
                                 if v.Name == "Reborn Skeleton" or v.Name == "Living Zombie" or v.Name == "Demonic Soul" or v.Name == "Posessed Mummy" then
                                     if string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, "Demonic Soul") then
                                         repeat wait(_G.Fast_Delay)
+                                            
                                             AttackNoCoolDown()
                                             AutoHaki()
                                             bringmob = true
@@ -4441,11 +4420,32 @@ DropdownDelayAttack:SetValue("NormalAttack")
 DropdownDelayAttack:OnChanged(function(Value)
 _G.FastAttackZedr_Mode = Value
 if _G.FastAttackZedr_Mode == "Fast Attack" then
-    _G.Fast_Delay = 0.05
+    _G.Fast_Delay = 0.0005
+    local SuperFastMode = true
+    local cac
+    if SuperFastMode then 
+        cac=task.wait
+    else
+        cac=wait
+    end
+    while cac() do 
+        AttackNoCD()
+    end
 elseif _G.FastAttackZedr_Mode == "Normal Attack" then
-    _G.Fast_Delay = 0.10
+    _G.Fast_Delay = 0.01
+    local SuperFastMode = false
 elseif _G.FastAttackZedr_Mode == "Super Fast Attack" then
-    _G.Fast_Delay = 0.02
+    _G.Fast_Delay = 0.000005
+    local SuperFastMode = true
+    local cac
+    if SuperFastMode then 
+        cac=task.wait
+    else
+        cac=wait
+    end
+    while cac() do 
+        AttackNoCD()
+    end
 end
 end)
 
