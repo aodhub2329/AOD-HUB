@@ -2340,18 +2340,20 @@ local plr = game.Players.LocalPlayer
                         local u9 = debug.getupvalue(AC.attack, 6)
                         local u7 = debug.getupvalue(AC.attack, 4)
                         local u10 = debug.getupvalue(AC.attack, 7)
+                        local u11 = debug.setupvalue(AC.attack, 9)
                         local u12 = (u8 * 798405 + u7 * 727595) % u9
                         local u13 = u7 * 798405
                         (function()
                             u12 = (u12 * u9 + u13) % 1099511627776
                             u8 = math.floor(u12 / u9)
-                            u7 = u12 - u8 * u9
+                            u7 = u12 - u8 * u9 * u11
                         end)()
                         u10 = u10 + 1
                         debug.setupvalue(AC.attack, 5, u8)
                         debug.setupvalue(AC.attack, 6, u9)
                         debug.setupvalue(AC.attack, 4, u7)
                         debug.setupvalue(AC.attack, 7, u10)
+                        debug.setupvalue(AC.attack, 9, u11)
                         pcall(function()
                             if plr.Character:FindFirstChildOfClass("Tool") and AC.blades and AC.blades[1] then
                                 AC.animator.anims.basic[1]:Play(0.01,0.01,0.01)
@@ -2363,9 +2365,6 @@ local plr = game.Players.LocalPlayer
                     end
                 end
             end
-        end
-        while wait(_G.Fast_Delay) do 
-            AttackNoCoolDown()
         end
     end
 end
