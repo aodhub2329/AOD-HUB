@@ -4126,127 +4126,7 @@ ToggleSeaBeAst:OnChanged(function(Value)
             end)
         end
     end)
-
-    local AutoMysticIsland = Tabs.Main:AddSection("Mirage Island")
-
-
-    Tabs.Main:AddButton({
-        Title = "Tween to Mirage Island",
-        Description = "",
-        Callback = function()
-            TweenMirage()
-        end
-    })
-    function TweenMirage()
-        repeat
-            wait()
-        until game:GetService("Workspace").Map:FindFirstChild("MysticIsland")
-        if game:GetService("Workspace").Map:FindFirstChild("MysticIsland") then
-            AllNPCS = getnilinstances()
-            for r, v in pairs(game:GetService("Workspace").NPCs:GetChildren()) do
-                table.insert(AllNPCS, v)
-            end
-            for r, v in pairs(AllNPCS) do
-                if v.Name == "Advanced Fruit Dealer" then
-                    Tween2(v.HumanoidRootPart.CFrame)
-                end
-            end
-        end
-    end
-
-
-    Tabs.Main:AddButton({
-        Title = "Tween to Highest mirage",
-        Description = "",
-        Callback = function()
-            TwenetoHighestPoint()
-        end
-    })
-
-    function TwenetoHighestPoint()
-        HighestPoint = getHighestPoint()
-        if HighestPoint then
-            Tween2(HighestPoint.CFrame * CFrame.new(0, 211.88, 0))
-        end
-    end
-    function getHighestPoint()
-        if not game.workspace.Map:FindFirstChild("MysticIsland") then
-            return nil
-        end
-        for r, v in pairs(game:GetService("Workspace").Map.MysticIsland:GetDescendants()) do
-            if v:IsA("MeshPart") then
-                if v.MeshId == "rbxassetid://6745037796" then
-                    return v
-                end
-            end
-        end
-    end
-
-local ToggleTweenGear = Tabs.Main:AddToggle("ToggleTweenGear", {Title = "Tween To Gear",Description = "", Default = false })
-ToggleTweenGear:OnChanged(function(Value)
-    _G.TweenToGear = Value
-end) 
-Options.ToggleTweenGear:SetValue(false)
-
-spawn(function()
-    pcall(function()
-        while wait() do
-            if _G.TweenToGear then
-				if game:GetService("Workspace").Map:FindFirstChild("MysticIsland") then
-					for i,v in pairs(game:GetService("Workspace").Map.MysticIsland:GetChildren()) do 
-						if v:IsA("MeshPart")then 
-                            if v.Material ==  Enum.Material.Neon then  
-                                Tween2(v.CFrame)
-                            end
-                        end
-					end
-				end
-			end
-        end
-    end)
-    end)
-
-
-
-
-    local Togglelockmoon = Tabs.Main:AddToggle("Togglelockmoon", {Title = "Auto lock moon",Description = "", Default = false })
-    Togglelockmoon:OnChanged(function(Value)
-        _G.AutoLockMoon = Value
-    end) 
-    Options.Togglelockmoon:SetValue(false)
-
-    spawn(function()
-        while wait() do
-            pcall(function()
-                if _G.AutoLockMoon then
-                    local moonDir = game.Lighting:GetMoonDirection()
-                    local lookAtPos = game.Workspace.CurrentCamera.CFrame.p + moonDir * 100
-                    game.Workspace.CurrentCamera.CFrame = CFrame.lookAt(game.Workspace.CurrentCamera.CFrame.p, lookAtPos)
-                end
-            end)
-        end
-    end)
-
-    spawn(function()
-        while wait() do
-            pcall(function()
-                if _G.AutoLockMoon then
-                    game:GetService("VirtualInputManager"):SendKeyEvent(true,"T",false,game)
-                    wait(0.1)
-                    game:GetService("VirtualInputManager"):SendKeyEvent(false,"T",false,game)
-                end
-            end)
-        end
-    end)
 end
-
-local ToggleMirage = Tabs.Main:AddToggle("ToggleMirage", {Title = "Auto Mirage Island",Description = "", Default = false })
-ToggleMirage:OnChanged(function(Value)
- _G.AutoSeaBeast = Value
-end) 
-
- Options.ToggleMirage:SetValue(false)
-
 --------------------------------------------------------------------------------------------------------------------------------------------
 --Item
 local castleraid = Tabs.Item:AddSection("Castle Raid")
@@ -6326,8 +6206,121 @@ end)
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 --RaceV4
+local AutoMysticIsland = Tabs.Main:AddSection("Mirage Island")
+Tabs.Main:AddButton({
+    Title = "Tween to Mirage Island",
+    Description = "",
+    Callback = function()
+        TweenMirage()
+    end
+})
+function TweenMirage()
+    repeat
+        wait()
+    until game:GetService("Workspace").Map:FindFirstChild("MysticIsland")
+    if game:GetService("Workspace").Map:FindFirstChild("MysticIsland") then
+        AllNPCS = getnilinstances()
+        for r, v in pairs(game:GetService("Workspace").NPCs:GetChildren()) do
+            table.insert(AllNPCS, v)
+        end
+        for r, v in pairs(AllNPCS) do
+            if v.Name == "Advanced Fruit Dealer" then
+                Tween2(v.HumanoidRootPart.CFrame)
+            end
+        end
+    end
+end
 
 
+Tabs.Main:AddButton({
+    Title = "Tween to Highest mirage",
+    Description = "",
+    Callback = function()
+        TwenetoHighestPoint()
+    end
+})
+
+function TwenetoHighestPoint()
+    HighestPoint = getHighestPoint()
+    if HighestPoint then
+        Tween2(HighestPoint.CFrame * CFrame.new(0, 211.88, 0))
+    end
+end
+function getHighestPoint()
+    if not game.workspace.Map:FindFirstChild("MysticIsland") then
+        return nil
+    end
+    for r, v in pairs(game:GetService("Workspace").Map.MysticIsland:GetDescendants()) do
+        if v:IsA("MeshPart") then
+            if v.MeshId == "rbxassetid://6745037796" then
+                return v
+            end
+        end
+    end
+end
+
+local ToggleTweenGear = Tabs.Main:AddToggle("ToggleTweenGear", {Title = "Tween To Gear",Description = "", Default = false })
+ToggleTweenGear:OnChanged(function(Value)
+_G.TweenToGear = Value
+end) 
+Options.ToggleTweenGear:SetValue(false)
+
+spawn(function()
+pcall(function()
+    while wait() do
+        if _G.TweenToGear then
+            if game:GetService("Workspace").Map:FindFirstChild("MysticIsland") then
+                for i,v in pairs(game:GetService("Workspace").Map.MysticIsland:GetChildren()) do 
+                    if v:IsA("MeshPart")then 
+                        if v.Material ==  Enum.Material.Neon then  
+                            Tween2(v.CFrame)
+                        end
+                    end
+                end
+            end
+        end
+    end
+end)
+end)
+
+local Togglelockmoon = Tabs.Main:AddToggle("Togglelockmoon", {Title = "Auto lock moon",Description = "", Default = false })
+Togglelockmoon:OnChanged(function(Value)
+    _G.AutoLockMoon = Value
+end) 
+Options.Togglelockmoon:SetValue(false)
+
+spawn(function()
+    while wait() do
+        pcall(function()
+            if _G.AutoLockMoon then
+                local moonDir = game.Lighting:GetMoonDirection()
+                local lookAtPos = game.Workspace.CurrentCamera.CFrame.p + moonDir * 100
+                game.Workspace.CurrentCamera.CFrame = CFrame.lookAt(game.Workspace.CurrentCamera.CFrame.p, lookAtPos)
+            end
+        end)
+    end
+end)
+
+spawn(function()
+    while wait() do
+        pcall(function()
+            if _G.AutoLockMoon then
+                game:GetService("VirtualInputManager"):SendKeyEvent(true,"T",false,game)
+                wait(0.1)
+                game:GetService("VirtualInputManager"):SendKeyEvent(false,"T",false,game)
+            end
+        end)
+    end
+end)
+
+local ToggleMirage = Tabs.Main:AddToggle("ToggleMirage", {Title = "Auto Mirage Island",Description = "", Default = false })
+ToggleMirage:OnChanged(function(Value)
+_G.AutoSeaBeast = Value
+end) 
+Options.ToggleMirage:SetValue(false)
+
+
+local timpleoftime = Tabs.Item:AddSection("Timple Of Time")
 Tabs.Race:AddButton({
     Title = "Timple Of Time",
     Description = "",
