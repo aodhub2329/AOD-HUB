@@ -1,4 +1,3 @@
---[[
 
 
 
@@ -1038,5 +1037,5 @@
 
 
 
-]]
+
 spawn(function()while task.wait()do if _G.Settings.Configs["\070\097\115\116 \065\116\116\097\099\107"]then pcall(function()wait(.2)local G=game.Players.LocalPlayer local A=debug.getupvalues(require(G.PlayerScripts.CombatFramework))local N=A[2]function GetCurrentBlade()local G=N.activeController local A=G.blades[1]if not A then return end while A.Parent~=game.Players.LocalPlayer.Character do A=A.Parent end return A end local k=N.activeController for A=1,1,1 do local N=(require(game.ReplicatedStorage.CombatFramework.RigLib)).getBladeHits(G.Character,{G.Character.HumanoidRootPart},60)local L={}local v={}for G,A in pairs(N)do if A.Parent:FindFirstChild("\072\117\109\097\110\111\105\100\082\111\111\116\080\097\114\116")and not v[A.Parent]then table.insert(L,A.Parent.HumanoidRootPart)v[A.Parent]=true end end N=L if#N>0 then local L=debug.getupvalue(k.attack,5)local v=debug.getupvalue(k.attack,6)local s=debug.getupvalue(k.attack,4)local K=debug.getupvalue(k.attack,7)local C=(L*798405+s*727595)%v local n=s*((798405)(function()C=(C*v+u13)%1099511627776 L=math.floor(C/v)s=C-L*v end))()K=K+1 debug.setupvalue(k.attack,5,L)debug.setupvalue(k.attack,6,v)debug.setupvalue(k.attack,4,s)debug.setupvalue(k.attack,7,K)pcall(function()for G,A in pairs(k.animator.anims.basic)do A:Play()end end)if G.Character:FindFirstChildOfClass("\084\111\111\108")and(k.blades and k.blades[1])then(game:GetService("\082\101\112\108\105\099\097\116\101\100\083\116\111\114\097\103\101")).RigControllerEvent:FireServer("\119\101\097\112\111\110\067\104\097\110\103\101",tostring(GetCurrentBlade()))game.ReplicatedStorage.Remotes.Validator:FireServer(math.floor((C/1099511627776)*16777215),K);(game:GetService("\082\101\112\108\105\099\097\116\101\100\083\116\111\114\097\103\101")).RigControllerEvent:FireServer("\104\105\116",N,A,"")end end end end)end end end)
