@@ -28,7 +28,7 @@ local petPrice = price
 local petRarity = rarity
 
 -- Webhook URL
-local webhookURL = "https://l.webhook.party/hook/uRuBN79THfTukv2qOHNlhMjqdR%2F2MIpajsco8LkUS32AoNr0UWaxxjEEWf3G%2FtN3kQLNN74bM%2FDB6c23Ohsgb0D%2BzZG48XhbBY9t8kUTeDACJausugxIjGHnV2YCaZkZapYfQSrz4O%2BOQhkjhIbUgIL6vYf3t%2F8cl8zTUzKidouogPXK7j3Aoveqw6zHfE8GxyBZ%2FodFuD7rf3SZPvybLtOIrP%2FELVwZQzXvq4axEGyocdQX8xK8Km%2FmSZC%2FwfVS4OJN6JaX0%2B5NJRJS4dA2mZ7k0terFmDKt2y9x5BZirIxR2c7lH9Bg7bSEJg2AEvYc4ln%2BzQrp4qvJf2%2BrWzsqJAdp5t4128AY59QKe3jkEJzym6roiJvqfaAWCMMkezpFzqmDhVNhY0%3D/Ufa1xV7IY8LeZ%2BN%2B"
+local webhookURL = "https://discord.com/api/webhooks/1363876147909234688/2CWtdECvgbySxIRZgNIv1nCcC0smnNXwkQDzo5y_8hVxNdkoy1eGImjB1QveWdds2ThH"
 
 -- Dữ liệu gửi đi
 local data = {
@@ -83,7 +83,7 @@ http_request({
 })
 end
 function spin()
-    game:GetService("ReplicatedStorage"):FindFirstChild("Packages"):FindFirstChild("Net"):FindFirstChild("RE/RainbowSpinWheelService/Spin"):FireServer()
+    game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Net"):WaitForChild("RE/CandyEventService/Spin"):FireServer()
 end
 function check_brain(tuoi)
     for _, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
@@ -119,25 +119,47 @@ function parse_price(text)
 
     return nil
 end
+function AllAreSecret(tuoi)
+    for _, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
+        local spawn = v:FindFirstChild("Base") and v.Base:FindFirstChild("Spawn")
+        local attachment = spawn and spawn:FindFirstChild("Attachment")
+        local overhead = attachment and attachment:FindFirstChild("AnimalOverhead")
+        local rarity = overhead and overhead:FindFirstChild("Rarity")
+
+        if not (rarity and rarity.Text:lower() == "secret") then
+            return false
+        end
+    end
+    return true
+end
+
 function get_lowest_price_brain(tuoi)
     local lowestPrice = math.huge
     local weakestBrain = nil
-
+    local secretcheck = AllAreSecret(tuoi)
     for _, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
         local spawn = v:FindFirstChild("Base") and v.Base:FindFirstChild("Spawn")
         local attachment = spawn and spawn:FindFirstChild("Attachment")
         local overhead = attachment and attachment:FindFirstChild("AnimalOverhead")
         local price = overhead and overhead:FindFirstChild("Generation")
         local rarity = overhead and overhead:FindFirstChild("Rarity")
-
-        if price and price.Text then
-            local value = parse_price(price.Text)
-
-            if value and value < lowestPrice then
-                lowestPrice = value
-                weakestBrain = v
-            end
-        end
+	if secretcheck == false then
+	        if price and price.Text and rarity.Text:lower() ~= "secret" then
+	            local value = parse_price(price.Text)
+	            if value and value < lowestPrice then
+	                lowestPrice = value
+	                weakestBrain = v
+	            end
+	        end
+	else
+		if price and price.Text then
+	            local value = parse_price(price.Text)
+	            if value and value < lowestPrice then
+	                lowestPrice = value
+	                weakestBrain = v
+	            end
+	        end
+	end
     end
 
     return weakestBrain, lowestPrice
@@ -208,153 +230,93 @@ function chase_and_catch(humanoid, rootPart)
     print("❌ Không bắt được (di chuyển quá nhanh?)")
     return false
 end
-
-function smoothTeleport(targetPosition)
-    local character = game.Players.LocalPlayer.Character
-    if not character or not character:FindFirstChild("HumanoidRootPart") then return end
-
-    local hrp = character.HumanoidRootPart
-
-    -- Dịch chuyển tức thì
-    hrp.CFrame = CFrame.new(targetPosition + Vector3.new(0, 0, 0))
-
-    -- Tạo BodyPosition để giữ vị trí
-    local bodyPosition = Instance.new("BodyPosition")
-    bodyPosition.MaxForce = Vector3.new(1e5, 1e5, 1e5)
-    bodyPosition.P = 100000
-    bodyPosition.D = 10000
-    bodyPosition.Position = targetPosition
-    bodyPosition.Parent = hrp
-
-    return bodyPosition
-end
-local function tryCatchPet(v, hrp, FIRE_DISTANCE, tuoi)
-    local promptSuccess = false
-    local player = game.Players.LocalPlayer
-    local char = player.Character or player.CharacterAdded:Wait()
-    local humanoid = char:FindFirstChild("Humanoid")
-
-    local function getDistance(pos1, pos2)
-        return (pos1 - pos2).Magnitude
-    end
-
-    while task.wait(0.05) do
-
-
-        -- 🐾 Lấy pet
-        local rootPart = v:FindFirstChild("HumanoidRootPart")
-        if not rootPart then
-            print("❌ Pet không còn HumanoidRootPart")
-            break
-        end
-
-        local promptAttachment = rootPart:FindFirstChild("PromptAttachment")
-        if not promptAttachment then
-            print("❌ PromptAttachment không còn")
-            promptSuccess = true
-            break
-        end
-
-        local prompt = promptAttachment:FindFirstChild("ProximityPrompt")
-        if not prompt then
-            print("❌ Prompt không còn")
-            promptSuccess = true
-            break
-        end
-
-        if prompt.HoldDuration ~= 0 then
-            prompt.HoldDuration = 0
-        end
-
-        -- 🌀 Lặp lại fire + teleport cho tới khi prompt biến mất
-        repeat wait(0.0005)
-            -- 🧠 Check chuồng có đầy không
-            local hcekh = check_brain(tuoi)
-            if hcekh == false then
-                print("🐶 Chuồng đầy, bán pet trước khi bắt thêm")
-                humanoid:MoveTo(tuoi.Spawn.Position)
-                humanoid.MoveToFinished:Wait()
-                local s = get_lowest_price_brain(tuoi)
-                for _ = 1, 3 do
-                    if getDistance(hrp.Position, s.Claim.Hitbox.Position) > FIRE_DISTANCE then
-                        humanoid:MoveTo(s.Claim.Hitbox.Position)
-                        humanoid.MoveToFinished:Wait()
-                    else
-                        fireproximityprompt(s.Base.Spawn.PromptAttachment.ProximityPrompt)
-                        break
-                    end
-                end
-                break -- Dừng lại vì đang sell
-            else
-                if not promptAttachment:FindFirstChild("ProximityPrompt") or not prompt.Enabled then
-                    promptSuccess = true
-                    break
-                end
-
-                local distance = (hrp.Position - rootPart.Position).Magnitude
-                if distance > FIRE_DISTANCE then
-                    local bp = smoothTeleport(rootPart.Position)
-                    if bp then bp:Destroy() end
-                end
-
-                fireproximityprompt(prompt)
-            end
-        until promptSuccess
-
-        if promptSuccess then
-            break
-        end
-    end
-
-    return promptSuccess
-end
-
--- Cập nhật auto_buy_or_farm để dùng tryCatchPet đúng cách và tránh loop sau khi bắt
 function auto_buy_or_farm()
+    
     local FIRE_DISTANCE = 7
+    
     local tuoi = getpot()
-
+    tuoi.Purchases.PlotBlock.Hitbox:Destroy()
     local function getDistance(pos1, pos2)
-        return (pos1 - pos2).Magnitude
+            return (pos1 - pos2).Magnitude
     end
-
-    local done = {}
-
-    while task.wait(0.05) do
+    local done = {} -- để tránh bắt 2 lần
+    while task.wait(1) do
         local player = game.Players.LocalPlayer
         local char = player.Character or player.CharacterAdded:Wait()
         local humanoid = char:FindFirstChild("Humanoid")
         local hrp = char:FindFirstChild("HumanoidRootPart")
         local found = false
         local hcekh = check_brain(tuoi)
-
-        if not hcekh then
+        print(hcekh)
+        if hcekh == false then
             local highestOwnedPrice = get_highest_price_brain(tuoi)
+	        print(highestOwnedPrice)
             for _, v in pairs(workspace.MovingAnimals:GetChildren()) do
-                if done[v] then continue end
-
                 local rootPart = v:FindFirstChild("HumanoidRootPart")
-                if not rootPart or not rootPart:FindFirstChild("Info") then continue end
-
-                local overhead = rootPart.Info:FindFirstChild("AnimalOverhead")
-                local price = overhead and overhead:FindFirstChild("Price")
-                local rarity = overhead and overhead:FindFirstChild("Rarity")
-                local genation = overhead and overhead:FindFirstChild("Generation")
-                local displayname = overhead and overhead:FindFirstChild("DisplayName")
-
-                local value = tonumber(parse_price(price.Text))
-                local valuegen = tonumber(parse_price(genation.Text))
-                local currentCash = player:FindFirstChild("leaderstats").Cash.Value
-
-                local nho, sdf = get_lowest_price_brain(tuoi)
-
-                if ((valuegen >= highestOwnedPrice) or (valuegen > sdf)) and currentCash > value then
-                    found = true
-                    local caught = tryCatchPet(v, hrp, FIRE_DISTANCE, tuoi)
-                    if caught then
-                        done[v] = true
-                        if rarity.Text:lower() == "secret" then
-                            send_webhook(displayname.Text, price.Text, rarity.Text)
+                if rootPart and rootPart:FindFirstChild("Info") then
+                    local overhead = rootPart.Info:FindFirstChild("AnimalOverhead")
+                    local price = overhead and overhead:FindFirstChild("Price")
+                    local rarity = overhead and overhead:FindFirstChild("Rarity")
+		            local genation = overhead and overhead:FindFirstChild("Generation")
+                    local displayname = overhead and overhead:FindFirstChild("DisplayName")
+                    local value = tonumber(parse_price(price.Text))
+                    local valuegen = tonumber(parse_price(genation.Text))
+                    local currentCash = player:FindFirstChild("leaderstats"):FindFirstChild("Cash").Value
+                    local nho, sdf = get_lowest_price_brain(tuoi)
+		            print(sdf)
+                    if valuegen >= tonumber(highestOwnedPrice) and not done[v] then
+                            if currentCash > value then
+                                found = true
+                                    
+                                while task.wait() do
+                                    local rootPart = v:FindFirstChild("HumanoidRootPart")
+                                    if rootPart then
+                                        if getDistance(hrp.Position, rootPart.Position) > FIRE_DISTANCE then
+                                            humanoid:MoveTo(rootPart.Position)
+                                        else
+                                            local prompt = rootPart:FindFirstChild("PromptAttachment")
+                                            if prompt and prompt:FindFirstChild("ProximityPrompt") then
+                                                fireproximityprompt(prompt.ProximityPrompt)
+                                                done[v] = true
+                                                if rarity.Text:lower() == "secret" then
+                                                    send_webhook(displayname.Text,price.Text,rarity.Text)
+							                        break
+                                                end
+                                                
+                                            end
+                                        end
+                                    else
+                                        break
+                                    end
+                                end
+                            end
+                    else
+                        if valuegen > tonumber(sdf) and not done[v] then
+                            if currentCash > value then
+                                found = true
+                                    
+                                while task.wait() do
+                                    local rootPart = v:FindFirstChild("HumanoidRootPart")
+                                    if rootPart then
+                                        if getDistance(hrp.Position, rootPart.Position) > FIRE_DISTANCE then
+                                            humanoid:MoveTo(rootPart.Position)
+                                        else
+                                            local prompt = rootPart:FindFirstChild("PromptAttachment")
+                                            if prompt and prompt:FindFirstChild("ProximityPrompt") then
+                                                fireproximityprompt(prompt.ProximityPrompt)
+                                                done[v] = true
+                                                if rarity.Text:lower() == "secret" then
+                                                    send_webhook(displayname.Text,price.Text,rarity.Text)
+						                            break
+                                                end
+                                                
+                                            end
+                                        end
+                                    else
+                                        break
+                                    end
+                                end
+                            end
                         end
                     end
                 end
@@ -362,30 +324,28 @@ function auto_buy_or_farm()
         else
             humanoid:MoveTo(tuoi.Spawn.Position)
             humanoid.MoveToFinished:Wait()
-            local s = get_lowest_price_brain(tuoi)
-            for _ = 1, 3 do
-                if getDistance(hrp.Position, s.Claim.Hitbox.Position) > FIRE_DISTANCE then
-                    humanoid:MoveTo(s.Claim.Hitbox.Position)
-                    humanoid.MoveToFinished:Wait()
-                else
-                    fireproximityprompt(s.Base.Spawn.PromptAttachment.ProximityPrompt)
-                    break
-                end
+            local s,a = get_lowest_price_brain(tuoi)
+            for i = 1, 3 do
+            if getDistance(hrp.Position, s.Claim.Hitbox.Position) > FIRE_DISTANCE then
+                humanoid:MoveTo(s.Claim.Hitbox.Position)
+                humanoid.MoveToFinished:Wait() 
+            else
+                fireproximityprompt(s.Base.Spawn.PromptAttachment.ProximityPrompt)
+                break
             end
+            end
+            
         end
-
         if not found then
             humanoid:MoveTo(tuoi.Spawn.Position)
             humanoid.MoveToFinished:Wait()
             sell(tuoi)
-            
         else
             humanoid:MoveTo(tuoi.Spawn.Position)
             humanoid.MoveToFinished:Wait()
         end
     end
 end
-
 local VirtualUser = game:service "VirtualUser"
 game:service("Players").LocalPlayer.Idled:connect(function()
     VirtualUser:CaptureController()
