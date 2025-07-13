@@ -181,7 +181,6 @@ function sell(tuoi)
     end
     humanoid:MoveTo(tuoi.Spawn.Position)
     humanoid.MoveToFinished:Wait()
-    wait(5)
 end
 function chase_and_catch(humanoid, rootPart)
     local FIRE_DISTANCE = 7
@@ -321,7 +320,7 @@ function auto_buy_or_farm()
 
     local done = {}
 
-    while task.wait(0.25) do
+    while task.wait(0.05) do
         local player = game.Players.LocalPlayer
         local char = player.Character or player.CharacterAdded:Wait()
         local humanoid = char:FindFirstChild("Humanoid")
