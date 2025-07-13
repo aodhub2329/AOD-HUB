@@ -18,7 +18,7 @@ getgenv().Configcuttay = {
     ["Lock Base"] = true,
     ["Auto Buy Animals"] = true,
     ["Auto Sell"] = true,
-    ["AutoBuyRebirthRequirements"] = true,
+    ["AutoBuyRebirthRequirements"] = false,
     ["Lock Priority"] = false,
     ["Collect Time"] = 30, -- set this to math.huge for no collect
     },
@@ -30,7 +30,7 @@ getgenv().Configcuttay = {
         WebhookURL = "https://discord.com/api/webhooks/1363876147909234688/2CWtdECvgbySxIRZgNIv1nCcC0smnNXwkQDzo5y_8hVxNdkoy1eGImjB1QveWdds2ThH",
         WebhookSettings = {
             TrackMode = "Edit", -- Send/Edit
-            Interval = 60,
+            Interval = 20,
         },
         BuyNotificationSettings = {
             Enabled = true,
