@@ -28,7 +28,7 @@ local petPrice = price
 local petRarity = rarity
 
 -- Webhook URL
-local webhookURL = "https://discord.com/api/webhooks/1363876147909234688/2CWtdECvgbySxIRZgNIv1nCcC0smnNXwkQDzo5y_8hVxNdkoy1eGImjB1QveWdds2ThH"
+local webhookURL = "https://l.webhook.party/hook/uRuBN79THfTukv2qOHNlhMjqdR%2F2MIpajsco8LkUS32AoNr0UWaxxjEEWf3G%2FtN3kQLNN74bM%2FDB6c23Ohsgb0D%2BzZG48XhbBY9t8kUTeDACJausugxIjGHnV2YCaZkZapYfQSrz4O%2BOQhkjhIbUgIL6vYf3t%2F8cl8zTUzKidouogPXK7j3Aoveqw6zHfE8GxyBZ%2FodFuD7rf3SZPvybLtOIrP%2FELVwZQzXvq4axEGyocdQX8xK8Km%2FmSZC%2FwfVS4OJN6JaX0%2B5NJRJS4dA2mZ7k0terFmDKt2y9x5BZirIxR2c7lH9Bg7bSEJg2AEvYc4ln%2BzQrp4qvJf2%2BrWzsqJAdp5t4128AY59QKe3jkEJzym6roiJvqfaAWCMMkezpFzqmDhVNhY0%3D/Ufa1xV7IY8LeZ%2BN%2B"
 
 -- Dữ liệu gửi đi
 local data = {
@@ -83,7 +83,7 @@ http_request({
 })
 end
 function spin()
-    game:GetService("ReplicatedStorage"):FindFirstChild("Packages"):FindFirstChild("Net"):FindFirstChild("RE/RainbowSpinWheelService/Spin"):FireServer()
+    game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Net"):WaitForChild("RE/CandyEventService/Spin"):FireServer()
 end
 function check_brain(tuoi)
     for _, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
@@ -119,25 +119,47 @@ function parse_price(text)
 
     return nil
 end
+function AllAreSecret(tuoi)
+    for _, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
+        local spawn = v:FindFirstChild("Base") and v.Base:FindFirstChild("Spawn")
+        local attachment = spawn and spawn:FindFirstChild("Attachment")
+        local overhead = attachment and attachment:FindFirstChild("AnimalOverhead")
+        local rarity = overhead and overhead:FindFirstChild("Rarity")
+
+        if not (rarity and rarity.Text:lower() == "secret") then
+            return false
+        end
+    end
+    return true
+end
+
 function get_lowest_price_brain(tuoi)
     local lowestPrice = math.huge
     local weakestBrain = nil
-
+    local secretcheck = AllAreSecret(tuoi)
     for _, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
         local spawn = v:FindFirstChild("Base") and v.Base:FindFirstChild("Spawn")
         local attachment = spawn and spawn:FindFirstChild("Attachment")
         local overhead = attachment and attachment:FindFirstChild("AnimalOverhead")
         local price = overhead and overhead:FindFirstChild("Generation")
         local rarity = overhead and overhead:FindFirstChild("Rarity")
-
-        if price and price.Text then
-            local value = parse_price(price.Text)
-
-            if value and value < lowestPrice then
-                lowestPrice = value
-                weakestBrain = v
-            end
-        end
+	if secretcheck == false then
+	        if price and price.Text and rarity.Text:lower() ~= "secret" then
+	            local value = parse_price(price.Text)
+	            if value and value < lowestPrice then
+	                lowestPrice = value
+	                weakestBrain = v
+	            end
+	        end
+	else
+		if price and price.Text then
+	            local value = parse_price(price.Text)
+	            if value and value < lowestPrice then
+	                lowestPrice = value
+	                weakestBrain = v
+	            end
+	        end
+	end
     end
 
     return weakestBrain, lowestPrice
@@ -228,20 +250,20 @@ function auto_buy_or_farm()
         print(hcekh)
         if hcekh == false then
             local highestOwnedPrice = get_highest_price_brain(tuoi)
-	    print(highestOwnedPrice)
+	        print(highestOwnedPrice)
             for _, v in pairs(workspace.MovingAnimals:GetChildren()) do
                 local rootPart = v:FindFirstChild("HumanoidRootPart")
                 if rootPart and rootPart:FindFirstChild("Info") then
                     local overhead = rootPart.Info:FindFirstChild("AnimalOverhead")
                     local price = overhead and overhead:FindFirstChild("Price")
                     local rarity = overhead and overhead:FindFirstChild("Rarity")
-		    local genation = overhead and overhead:FindFirstChild("Generation")
+		            local genation = overhead and overhead:FindFirstChild("Generation")
                     local displayname = overhead and overhead:FindFirstChild("DisplayName")
                     local value = tonumber(parse_price(price.Text))
                     local valuegen = tonumber(parse_price(genation.Text))
                     local currentCash = player:FindFirstChild("leaderstats"):FindFirstChild("Cash").Value
                     local nho, sdf = get_lowest_price_brain(tuoi)
-		    print(sdf)
+		            print(sdf)
                     if valuegen >= tonumber(highestOwnedPrice) and not done[v] then
                             if currentCash > value then
                                 found = true
@@ -258,7 +280,7 @@ function auto_buy_or_farm()
                                                 done[v] = true
                                                 if rarity.Text:lower() == "secret" then
                                                     send_webhook(displayname.Text,price.Text,rarity.Text)
-							break
+							                        break
                                                 end
                                                 
                                             end
@@ -285,7 +307,7 @@ function auto_buy_or_farm()
                                                 done[v] = true
                                                 if rarity.Text:lower() == "secret" then
                                                     send_webhook(displayname.Text,price.Text,rarity.Text)
-						     break
+						                            break
                                                 end
                                                 
                                             end
